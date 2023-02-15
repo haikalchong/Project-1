@@ -39,3 +39,7 @@ async function multiplePokemon(){
     
 }
 multiplePokemon()
+
+for (i=0; i<250; i++){
+console.log(Math.floor(Math.random()*150)+1)
+}
