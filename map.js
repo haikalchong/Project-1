@@ -55,15 +55,29 @@ async function marker(pokemon) {
         let long = i.results[0].LONGITUDE
         let=pokemonLoc=L.marker([lat, long]).addTo(map)
         let pokeData= await getPokemon()
-        pokemonLoc.bindPopup(`<div><h3>${pokeData.name}</h3>
-        <img src="${pokeData.sprites.front_shiny}"/>
-        <ul>
-        <li>Pokemon ID: ${pokeData.id}</li>
-        <li>Type: ${pokeData.types[0].type.name}</li>
-        <li>Weight: ${pokeData.weight}</li>
-        </ul>
-        <button>Capture</button>
-        </div>`)
+        // pokemonLoc.bindPopup(`<div><h3>${pokeData.name}</h3>
+        // <img src="${pokeData.sprites.front_shiny}"/>
+        // <ul>
+        // <li>Pokemon ID: ${pokeData.id}</li>
+        // <li>Type: ${pokeData.types[0].type.name}</li>
+        // <li>Weight: ${pokeData.weight}</li>
+        // </ul>
+        // <button>Capture</button>
+        // </div>`)
+       pokemonLoc.bindPopup( `<div class="card" style="width:100%; height:100%; background-color:grey;">
+        <img src="${pokeData.sprites.front_shiny}" width="60px !important" class="cardImg" alt="${pokeData.name}"/>
+        <div class="card-body">
+          <h5 class="card-title">${pokeData.name}</h5>
+          <p class="card-text">
+          <ul>
+          <li>Pokemon ID: ${pokeData.id}</li>
+          <li>Type: ${pokeData.types[0].type.name}</li>
+          <li>Weight: ${pokeData.weight}</li>
+          </ul>
+          </p>
+          <button class="btn btn-primary">Capture</button>
+        </div>
+      </div>`)
         
 
 
