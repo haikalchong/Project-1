@@ -24,7 +24,8 @@ async function getPokemon() {
     let pokemon = Math.floor(Math.random() * 150) + 1
     let randomPokemon = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemon}`)
 
-    return randomPokemon.data.name
+    return randomPokemon.data
+
 }
 
 
@@ -32,10 +33,9 @@ async function getPokemon() {
 
 //generate multiple pokemon at once
 async function multiplePokemon() {
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 5; i++) {
         let pokemonName = await getPokemon()
-
-        console.log(pokemonName)
+        return pokemonName.data
     }
 
 }
@@ -46,14 +46,28 @@ async function multiplePokemon() {
 
 //generate random marker
 
-function marker(pokemon) {
+async function marker(pokemon) {
     //let postalCode=randomPost
 
     // let randomMarker= await axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${markerCoords}&returnGeom=Y&getAddrDetails=Y`)
     for (i of pokemon) {
         let lat = i.results[0].LATITUDE
         let long = i.results[0].LONGITUDE
-        L.marker([lat, long]).addTo(map)
+        let=pokemonLoc=L.marker([lat, long]).addTo(map)
+        let pokeData= await getPokemon()
+        pokemonLoc.bindPopup(`<div><h3>${pokeData.name}</h3>
+        <img src="${pokeData.sprites.front_shiny}"/>
+        <ul>
+        <li>Pokemon ID: ${pokeData.id}</li>
+        <li>Type: ${pokeData.types[0].type.name}</li>
+        <li>Weight: ${pokeData.weight}</li>
+        </ul>
+        <button>Capture</button>
+        </div>`)
+        
+
+
+
     }
 }
 
@@ -63,7 +77,7 @@ async function randomPost() {
 
 
     let postalAr = []
-    while (postalAr.length < 6) {
+    while (postalAr.length < 10) {
         let randomNumber = Math.floor(Math.random() * 900000) + 100000;
         let randomCoords = await axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${randomNumber}&returnGeom=Y&getAddrDetails=Y`)
         if (randomCoords.data.found == 1) {
@@ -74,6 +88,9 @@ async function randomPost() {
 
     }
     marker(postalAr)
+    
 
 }
 randomPost()
+
+
