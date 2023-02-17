@@ -5,7 +5,13 @@
 
 // for pokemon to generate random pokemon
 
+let ballIcon= L.icon({
+    iconUrl: 'pokeball.png',
 
+    iconSize: [38,75],
+    iconAnchor:[22,94],
+    popupAnchor:[-3,-76]
+});
 
 
 
@@ -46,18 +52,24 @@ async function multiplePokemon() {
 
 //to generate random postal
 
+let pokeLayer= L.layerGroup()
 
 
 //generate random marker
 
 async function marker(pokemon) {
     //let postalCode=randomPost
+  
 
     // let randomMarker= await axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${markerCoords}&returnGeom=Y&getAddrDetails=Y`)
     for (i of pokemon) {
         let lat = i.results[0].LATITUDE
         let long = i.results[0].LONGITUDE
-        let = pokemonLoc = L.marker([lat, long]).addTo(map)
+        
+        let = pokemonLoc = L.marker([lat, long], {icon: ballIcon}).addTo(pokeLayer)
+        pokeLayer.addTo(map)
+    
+
         let pokeData = await getPokemon()
         // pokemonLoc.bindPopup(`<div><h3>${pokeData.name}</h3>
         // <img src="${pokeData.sprites.front_shiny}"/>
@@ -107,7 +119,9 @@ async function randomPost() {
 }
 
 setInterval(function(){
+    pokeLayer.clearLayers()
     randomPost();
-}, 12000)
+}, 30000)
 
-
+// four square add on
+const fourSquareKey = "fsq3JrEqE31l1oSQP3kdQjP7B/tDogA6mWBfGxVi+3mBKl8=";
