@@ -3,16 +3,24 @@
 
 
 
+
 // for pokemon to generate random pokemon
 
-let ballIcon= L.icon({
+let ballIcon = L.icon({
     iconUrl: 'pokeball.png',
 
-    iconSize: [38,75],
-    iconAnchor:[22,94],
-    popupAnchor:[-3,-76]
+    iconSize: [38, 75],
+    iconAnchor: [22, 94],
+    popupAnchor: [-3, -76]
 });
 
+let generalMarker = L.icon({
+    iconUrl: 'generalMarker.png',
+
+    iconSize: [45, 50],
+    iconAnchor: [22, 94],
+    popupAnchor: [-3, -76]
+});
 
 
 // for map 
@@ -52,23 +60,23 @@ async function multiplePokemon() {
 
 //to generate random postal
 
-let pokeLayer= L.layerGroup()
+let pokeLayer = L.layerGroup()
 
 
 //generate random marker
 
 async function marker(pokemon) {
     //let postalCode=randomPost
-  
+
 
     // let randomMarker= await axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${markerCoords}&returnGeom=Y&getAddrDetails=Y`)
     for (i of pokemon) {
         let lat = i.results[0].LATITUDE
         let long = i.results[0].LONGITUDE
-        
-        let = pokemonLoc = L.marker([lat, long], {icon: ballIcon}).addTo(pokeLayer)
+
+        let = pokemonLoc = L.marker([lat, long], { icon: ballIcon }).addTo(pokeLayer)
         pokeLayer.addTo(map)
-    
+
 
         let pokeData = await getPokemon()
         // pokemonLoc.bindPopup(`<div><h3>${pokeData.name}</h3>
@@ -118,10 +126,50 @@ async function randomPost() {
     marker(postalAr)
 }
 
-setInterval(function(){
+setInterval(function () {
     pokeLayer.clearLayers()
     randomPost();
 }, 30000)
 
 // four square add on
 const fourSquareKey = "fsq3JrEqE31l1oSQP3kdQjP7B/tDogA6mWBfGxVi+3mBKl8=";
+async function searchData(query) {
+    let response = await axios.get("https://api.foursquare.com/v3/places/search", {
+        "headers": {
+            "Accept": "application/json",
+            "Authorization": fourSquareKey
+        },
+        "params": {
+
+            "query": query,
+            "limit": 1
+        }
+    })
+
+    return response.data
+}
+
+
+
+let searchResultLayer = L.layerGroup()
+
+
+document.querySelector("#searchBtn").addEventListener("click",async function () {
+    let searchValue = document.querySelector("#searchValue").value;
+    let searchResults = await searchData(searchValue);
+    searchResultLayer.clearLayers();
+    
+
+    for (let result of searchResults.results){
+    
+        let coordinate = [result.geocodes.main.latitude, result.geocodes.main.longitude];
+        let searchMarker = L.marker(coordinate,{icon : generalMarker}).addTo(searchResultLayer);
+        searchMarker.bindPopup(`<h3>${result.name}</h3><p>
+        ${result.location.formatted_address}</p>`)
+    }
+    searchResultLayer.addTo(map)
+
+
+
+});
+
