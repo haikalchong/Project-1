@@ -142,7 +142,7 @@ async function searchData(query) {
         "params": {
 
             "query": query,
-            "limit": 1
+            "limit": 20
         }
     })
 
