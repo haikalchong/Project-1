@@ -1,4 +1,23 @@
+// let pokedexData;
 
+// //get data from JSON
+//  fetch('./pokedex.json')
+//   .then(response => response.json())
+//   .then(data => pokedexData = data)
+//   .catch(error => console.log(error));
+
+
+//   console.log(pokedexData)
+// let pokedexData= async function(){
+//     let pokeresponse=await axios.get("pokedex.json")
+//     return pokeresponse.data
+    
+    
+// }
+
+// pokedexData()
+
+let pokedexData=[]
 
 
 
@@ -74,7 +93,7 @@ async function marker(pokemon) {
         let lat = i.results[0].LATITUDE
         let long = i.results[0].LONGITUDE
 
-        let = pokemonLoc = L.marker([lat, long], { icon: ballIcon }).addTo(pokeLayer)
+        let pokemonLoc = L.marker([lat, long], { icon: ballIcon }).addTo(pokeLayer)
         pokeLayer.addTo(map)
 
 
@@ -90,7 +109,7 @@ async function marker(pokemon) {
         // </div>`)
         pokemonLoc.bindPopup(`<div class="card" style="width:100%; height:100%; background-color:black;">
         <img src="${pokeData.sprites.front_shiny}" width="100px !important" class="cardImg" alt="${pokeData.name}"/>
-        <div class="card-body">
+        <div class="card-body pokeCard" >
           <h5 class="card-title" style="color:white;">${pokeData.name}</h5>
           <p class="card-text">
           <ul style="color:white;">
@@ -99,15 +118,18 @@ async function marker(pokemon) {
           <li style="color:white;">Weight: ${pokeData.weight}</li>
           </ul>
           </p>
-          <button class="btn btn-primary">Capture</button>
+          <button class="btn btn-primary pokeCapture" data-name="${pokeData.name}" data-id="${pokeData.id}">Capture</button>
         </div>
       </div>`)
-
+      
 
 
 
     }
+    
+
 }
+
 
 
 // marker(pokemonCoords)
@@ -126,10 +148,10 @@ async function randomPost() {
     marker(postalAr)
 }
 
-setInterval(function () {
-    pokeLayer.clearLayers()
-    randomPost();
-}, 30000)
+// setInterval(function () {
+//     pokeLayer.clearLayers()
+//     randomPost();
+// }, 15000)
 
 // four square add on
 const fourSquareKey = "fsq3JrEqE31l1oSQP3kdQjP7B/tDogA6mWBfGxVi+3mBKl8=";
@@ -172,4 +194,31 @@ document.querySelector("#searchBtn").addEventListener("click",async function () 
 
 
 });
+
+randomPost()
+
+$(document.body).on('click', '.pokeCapture', function(){
+    let pokeId= $(this).attr("data-id");
+    let pokeName=$(this).attr("data-name");
+    let newPokemon={
+        "id":pokeId,
+        "name":pokeName
+    }
+    
+    pokedexData.push(newPokemon)
+    displayPokedex()
+   
+    
+})
+function displayPokedex(){
+    let pokedex=document.querySelector("#pokedex")
+    for (i of pokedexData){
+        document.createElement("div")
+        let newData=document.createTextNode(i)
+        document.querySelector("#pokedex").appendChild(newData)
+    }
+
+}
+
+
 
