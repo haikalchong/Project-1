@@ -17,7 +17,6 @@
 
 // pokedexData()
 
-let pokedexData=[]
 
 
 
@@ -34,11 +33,18 @@ let ballIcon = L.icon({
 });
 
 let generalMarker = L.icon({
-    iconUrl: 'generalMarker.png',
+    iconUrl: 'foodlogo.png',
 
     iconSize: [45, 50],
     iconAnchor: [22, 94],
     popupAnchor: [-3, -76]
+});
+
+let avatarMarker= L.icon({
+    iconUrl: 'avatar.png',
+    iconSize: [45,50],
+    iconAnchor:[22,94],
+    popupAnchor:[-3,-76]
 });
 
 
@@ -56,6 +62,11 @@ L.tileLayer('https://{s}.tile.jawg.io/jawg-matrix/{z}/{x}/{y}{r}.png?access-toke
     bounds: [[1.56073, 104.11475], [1.16, 103.502]],
     accessToken: accessTokenOne
 }).addTo(map);
+
+
+//geolocation
+// let searchLL= getAccuracy()
+
 
 async function getPokemon() {
     let pokemon = Math.floor(Math.random() * 150) + 1
@@ -108,27 +119,29 @@ async function marker(pokemon) {
         // <button>Capture</button>
         // </div>`)
         pokemonLoc.bindPopup(`<div class="card" style="width:100%; height:100%; background-color:black;">
-        <img src="${pokeData.sprites.front_shiny}" width="100px !important" class="cardImg" alt="${pokeData.name}"/>
-        <div class="card-body pokeCard" >
-          <h5 class="card-title" style="color:white;">${pokeData.name}</h5>
-          <p class="card-text">
-          <ul style="color:white;">
-          <li style="color:white;">Pokemon ID: ${pokeData.id}</li>
-          <li style="color:white;">Type: ${pokeData.types[0].type.name}</li>
-          <li style="color:white;">Weight: ${pokeData.weight}</li>
-          </ul>
-          </p>
-          <button class="btn btn-primary pokeCapture" data-name="${pokeData.name}" data-id="${pokeData.id}">Capture</button>
-        </div>
-      </div>`)
+         <img src="${pokeData.sprites.front_shiny}" width="100px !important" class="cardImg" alt="${pokeData.name}"/>
+         <div class="card-body pokeCard" >
+           <h5 class="card-title" style="color:white;">${pokeData.name}</h5>
+           <p class="card-text">
+           <ul style="color:white;">
+           <li style="color:white;">Pokemon ID: ${pokeData.id}</li>
+           <li style="color:white;">Type: ${pokeData.types[0].type.name}</li>
+           <li style="color:white;">Weight: ${pokeData.weight}</li>
+           </ul>
+           </p>
+           <button class="btn btn-primary pokeCapture" id="pokemonBtn" data-name="${pokeData.name}" data-id="${pokeData.id} data-img="${pokeData.sprites.front_shiny}">Capture</button>
+         </div>
+       </div>`)
+
+  
       
 
 
 
     }
     
-
 }
+
 
 
 
@@ -148,14 +161,14 @@ async function randomPost() {
     marker(postalAr)
 }
 
-// setInterval(function () {
-//     pokeLayer.clearLayers()
-//     randomPost();
-// }, 15000)
+ setInterval(function () {
+     pokeLayer.clearLayers()
+     randomPost();
+ }, 15000)
 
 // four square add on
 const fourSquareKey = "fsq3JrEqE31l1oSQP3kdQjP7B/tDogA6mWBfGxVi+3mBKl8=";
-async function searchData(query) {
+async function searchData(query,currentL) {
     let response = await axios.get("https://api.foursquare.com/v3/places/search", {
         "headers": {
             "Accept": "application/json",
@@ -164,7 +177,12 @@ async function searchData(query) {
         "params": {
 
             "query": query,
-            "limit": 20
+             "ll" : currentL,
+            "radius": 5000,
+            "categories" : 13000,
+            "limit": 10
+
+        
         }
     })
 
@@ -177,10 +195,28 @@ let searchResultLayer = L.layerGroup()
 
 
 document.querySelector("#searchBtn").addEventListener("click",async function () {
-    let searchValue = document.querySelector("#searchValue").value;
-    let searchResults = await searchData(searchValue);
+    // let searchValue = document.querySelector("#searchValue").value;
+    // let searchResults = await searchData(searchValue);
     searchResultLayer.clearLayers();
-    
+
+    let currentL= ""
+map.locate({setView: true, maxZoom: 16});
+function onLocationFound(e) {
+    // var radius = e.accuracy;
+    currentL+=e.latlng.lat + "," + e.latlng.lng
+   
+
+     L.marker(e.latlng,{icon: avatar}).addTo(map)
+        //  .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+    //  L.circle(e.latlng, radius).addTo(map);
+
+ }
+
+ map.on('locationfound', onLocationFound);
+
+ let searchValue = document.querySelector("#searchValue").value;
+ let searchResults = await searchData(searchValue,currentL);
 
     for (let result of searchResults.results){
     
@@ -195,30 +231,48 @@ document.querySelector("#searchBtn").addEventListener("click",async function () 
 
 });
 
+let pokedexData=[]
+
 randomPost()
 
 $(document.body).on('click', '.pokeCapture', function(){
-    let pokeId= $(this).attr("data-id");
-    let pokeName=$(this).attr("data-name");
-    let newPokemon={
-        "id":pokeId,
-        "name":pokeName
-    }
-    
-    pokedexData.push(newPokemon)
-    displayPokedex()
+     let pokeId= $(this).attr("data-id");
+     let pokeName=$(this).attr("data-name");
+     let pokeImg=$(this).attr("data-img");
+     
+     
+     
+    //  let newPokemon={
+    //      "id":pokeId,
+    //      "name":pokeName,
+    //      "image": pokeImg
+    //  }
+    alert(`"congratulations you caught ${pokeName}"`)
+    pokeLayer.clearLayers()
+    randomPost()
+//     pokedexData.push(newPokemon.id, newPokemon.name)
+//    displayPokedex()
    
     
-})
-function displayPokedex(){
-    let pokedex=document.querySelector("#pokedex")
-    for (i of pokedexData){
-        document.createElement("div")
-        let newData=document.createTextNode(i)
-        document.querySelector("#pokedex").appendChild(newData)
-    }
+ })
+ function displayPokedex(){
+     let pokedex=document.querySelector("#pokedex")
+     for (i of pokedexData){
+         document.createElement("div")
+         let newData=document.createTextNode(i)
+         pokedex.appendChild(newData)
+    
+     }
 
-}
+ }
 
 
 
+//geolocation
+
+
+
+//  function getAccuracy(){
+//     onLocationFound
+//     return String(e.latitude + "," + e.longitude)
+//  }

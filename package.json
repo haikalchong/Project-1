@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "leaflet.locatecontrol": "^0.79.0"
+  }
+}
