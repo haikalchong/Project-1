@@ -1,4 +1,6 @@
-// let pokedexData;
+
+
+
 
 
 
@@ -7,14 +9,14 @@ const API_BASE_URL = "https://api.foursquare.com/v3/places/";
 
 
 
-// for pokemon to generate random pokemon
+//Map Icons
 
 let ballIcon = L.icon({
     iconUrl: 'pokeball.png',
 
     iconSize: [38, 55],
     iconAnchor: [22, 94],
-    popupAnchor: [-3, -76]
+    popupAnchor: [0, 0]
 });
 
 let generalMarker = L.icon({
@@ -22,15 +24,53 @@ let generalMarker = L.icon({
 
     iconSize: [45, 50],
     iconAnchor: [22, 94],
-    popupAnchor: [-3, -76]
+    popupAnchor: [0, 0]
 });
 
 let avatarMarker = L.icon({
     iconUrl: 'avatar.png',
     iconSize: [45, 50],
     iconAnchor: [22, 94],
-    popupAnchor: [-3, -76]
+    popupAnchor: [0, 0]
 });
+
+const sunIcon = L.icon({
+    iconUrl: 'clear-sky.png',
+    iconSize: [45, 45],
+    iconAnchor: [23, 45],
+    popupAnchor: [0, 0]
+})
+
+const windIcon = L.icon({
+    iconUrl: 'wind.png',
+    iconSize: [45, 45],
+    iconAnchor: [23, 45],
+    popupAnchor: [0, 0]
+})
+
+
+const cloudIcon = L.icon({
+    iconUrl: 'cloud.png',
+    iconSize: [45, 45],
+    iconAnchor: [23, 45],
+    popupAnchor: [0, 0]
+})
+
+
+
+const rainIcon = L.icon({
+    iconUrl: 'raining.png',
+    iconSize: [45, 45],
+    iconAnchor: [23, 45],
+    popupAnchor: [0, 0]
+})
+
+const thunderIcon = L.icon({
+    iconUrl: 'thunderstorm.png',
+    iconSize: [45, 45],
+    iconAnchor: [23, 45],
+    popupAnchor: [0, 0]
+})
 
 
 // for map 
@@ -52,7 +92,6 @@ let pokemonGen=document.querySelector("#pokemonGenSelect").value
 
 function changePokemonGen(){
     pokemonGen=document.querySelector("#pokemonGenSelect").value
-    console.log(pokemonGen)
     pokeLayer.clearLayers()
     randomPost()
 }
@@ -101,7 +140,7 @@ async function multiplePokemon() {
 
 
 let pokeLayer = L.layerGroup()
-
+let searchResultCluster = L.markerClusterGroup()
 
 //generate random marker
 
@@ -181,7 +220,7 @@ async function marker(pokemon) {
             //creating the pokemon data
 
             let pokedexData = document.createElement("div");
-            pokedexData.className = "container row"
+            
 
 
             let pokedexCard = document.createElement("div")
@@ -207,31 +246,7 @@ async function marker(pokemon) {
                 pokemonMoves.appendChild(moveElement)
             }
 
-            // let pokemonMoveOne = document.createElement("li");
-            // pokemonMoveOne.className = "list-group-item"
-            // pokemonMoveOne.innerHTML = `Skill: ${pokeData.moves[0].move.name}`
-            // pokemonMoves.appendChild(pokemonMoveOne);
-
-            // let pokemonMoveTwo = document.createElement("li");
-            // pokemonMoveTwo.className = "list-group-item"
-            // pokemonMoveTwo.innerHTML = `Skill: ${pokeData.moves[1].move.name}`
-            // pokemonMoves.appendChild(pokemonMoveTwo);
-
-            // let pokemonMoveThree = document.createElement("li");
-            // pokemonMoveThree.className = "list-group-item"
-            // pokemonMoveThree.innerHTML = `Skill: ${pokeData.moves[2].move.name}`
-            // pokemonMoves.appendChild(pokemonMoveTwo);
-
-            // let pokemonMoveFour = document.createElement("li");
-            // pokemonMoveFour.className = "list-group-item"
-            // pokemonMoveFour.innerHTML = `Skill: ${pokeData.moves[3].move.name}`
-            // pokemonMoves.appendChild(pokemonMoveFour);
-
-            // let pokemonMoveFive = document.createElement("li");
-            // pokemonMoveFive.className = "list-group-item"
-
-            // pokemonMoveFive.innerHTML = `Skill: ${pokeData.moves[4].move.name}`
-            // pokemonMoves.appendChild(pokemonMoveFive);
+           
             pokedexCard.appendChild(pokemonMoves);
             pokedexData.appendChild(pokedexCard);
 
@@ -249,52 +264,29 @@ async function marker(pokemon) {
         pokemonLoc.bindPopup(pokemonCard)
 
 
-
-
-
-        //     pokemonLoc.bindPopup(`<div class="card" style="width:100%; height:100%; background-color:black;">
-        //     <img src="${pokeData.sprites.front_shiny}" width="100px !important" class="cardImg" alt="${pokeData.name}"/>
-        //       <div class="card-body pokeCard" >
-        //        <h5 class="card-title" style="color:white;">${pokeData.name}</h5>
-        //       <p class="card-text">
-        //      <ul style="color:white;">
-        //       <li style="color:white;">Pokemon ID: ${pokeData.id}</li>
-        //         <li style="color:white;">Type: ${pokeData.types[0].type.name}</li>
-        //        <li style="color:white;">Weight: ${pokeData.weight}</li>
-        //        </ul>
-        //     </p>
-        //        <button class="btn btn-primary pokeCapture" id="pokemonBtn" data-name="${pokeData.name}" data-id="${pokeData.id} data-img="${pokeData.sprites.front_shiny}">Capture</button>
-        //       </div>
-        //    </div>`)
-
-
-
-
     }
-
-
-
-    // $(document.body).on('click', '.pokeCapture', function () {
-    //     let pokeId = $(this).attr("data-id");
-    //     let pokeName = $(this).attr("data-name");
-    //     let pokeImg = $(this).attr("data-img");
-
-
-
-    //     //  let newPokemon={
-    //     //      "id":pokeId,
-    //     //      "name":pokeName,
-    //     //      "image": pokeImg
-    //     //  }
-    //     alert(`"congratulations you caught ${pokeName}"`)
-    //     pokeLayer.clearLayers()
-    //     randomPost()
-    //     //     pokedexData.push(newPokemon.id, newPokemon.name)
-    //     //    displayPokedex()
-
-
-
 }
+
+
+
+
+
+
+
+
+       
+
+
+
+
+    
+
+
+
+  
+
+
+
 
 
 
@@ -317,6 +309,8 @@ async function randomPost() {
     }
 
     marker(postalArray)
+    
+   
 
 }
 //  setInterval(function () {
@@ -362,14 +356,14 @@ document.querySelector("#searchBtn").addEventListener("click", async function ()
     map.locate({ maxZoom: 16 });
     function onLocationFound(e) {
         // var radius = e.accuracy;
-        currentL += e.latlng.lat + "," + e.latlng.lng
+        currentL = e.latitude + "," + e.longitude
 
 
         L.marker(e.latlng, { icon: avatarMarker }).addTo(map)
         //  .bindPopup("You are within " + radius + " meters from this point").openPopup();
 
         //  L.circle(e.latlng, radius).addTo(map);
-
+        
     }
 
     map.on('locationfound', onLocationFound);
@@ -380,14 +374,15 @@ document.querySelector("#searchBtn").addEventListener("click", async function ()
     for (let result of searchResults.results) {
 
         let coordinate = [result.geocodes.main.latitude, result.geocodes.main.longitude];
-        let searchMarker = L.marker(coordinate, { icon: generalMarker }).addTo(searchResultLayer);
-
+        let searchMarker = L.marker(coordinate, { icon:generalMarker}).addTo(searchResultLayer);
+        
+        searchResultLayer.addTo(searchResultCluster)
 
         searchMarker.bindPopup(`<div>
         <h3>${result.name}</h3><p>
         ${result.location.formatted_address}</p></div>`)
     }
-    searchResultLayer.addTo(map)
+    searchResultCluster.addTo(map)
 
 
 
@@ -395,40 +390,57 @@ document.querySelector("#searchBtn").addEventListener("click", async function ()
 
 let pokedexData = []
 
-randomPost()
-
-// $(document.body).on('click', '.pokeCapture', function () {
-//     let pokeId = $(this).attr("data-id");
-//     let pokeName = $(this).attr("data-name");
-//     let pokeImg = $(this).attr("data-img");
+ randomPost()
 
 
+// add weather api
+let weatherLayer= L.layerGroup()
+const weatherApi= 'https://api.data.gov.sg/v1/environment/2-hour-weather-forecast'
+let weatherArray=[]
 
-//     //  let newPokemon={
-//     //      "id":pokeId,
-//     //      "name":pokeName,
-//     //      "image": pokeImg
-//     //  }
-//     alert(`"congratulations you caught ${pokeName}"`)
-//     pokeLayer.clearLayers()
-//     randomPost()
-//     //     pokedexData.push(newPokemon.id, newPokemon.name)
-//     //    displayPokedex()
-
-
-// })
-function displayPokedex() {
-    let pokedex = document.querySelector("#pokedex")
-    for (i of pokedexData) {
-        document.createElement("div")
-        let newData = document.createTextNode(i)
-        pokedex.appendChild(newData)
-
+async function weather(){
+    let response= await axios.get(weatherApi)
+    let weatherArea=response.data.area_metadata;
+    
+   
+    
+    for (let weather of response.data.items[0].forecasts){
+        weatherArray.push(weather)
     }
+    
+    for (let i = 0; i<weatherArray.length; i++){
+      weatherArea[i].forecast= weatherArray[i]
+        
+ }
+    for (let loc of weatherArea ){
+        let lat = loc.label_location.latitude;
+        let lng= loc.label_location.longitude;
 
+
+        if(loc.forecast.forecast == "Cloudy" || loc.forecast.forecast == 'Partly Cloudy (Day)' || loc.forecast.forecast == 'Partly Cloudy (Night)'){
+            console.log("test")
+            L.marker([lat, lng],{icon:cloudIcon}).addTo(weatherLayer)
+        }
+
+        if(loc.forecast.forecast == "Fair & Warm" || loc.forecast.forecast == 'Fair(Day)' || loc.forecast.forecast == 'Fair(Night)'){
+            L.marker([lat, lng],{icon:sunIcon}).addTo(weatherLayer)
+        }
+
+        if(loc.forecast.forecast == 'Light Showers' || loc.forecast.forecast == 'Showers' || loc.forecast.forecast == 'Moderate Rain' || loc.forecast.forecast == 'Light Rain'){
+            L.marker([lat, lng],{icon:rainIcon}).addTo(weatherLayer)
+        }
+        if (loc.forecast.forecast == 'Thundery Showers' || loc.forecast.forecast == 'Heavy Thundery Showers' || loc.forecast.forecast == ' Heavy Thundery Showers with Gusty Winds'){
+            L.marker([lat, lng],{icon:thunderIcon}).addTo(weatherLayer)
+        }
+        weatherLayer.addTo(map)
+    }
+      
+   
+ 
 }
 
 
+weather()
 
 
 
