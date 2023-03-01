@@ -3,7 +3,7 @@
 }
 
 
-/* #mainbody{
+#mainbody{
     position:relative;
 }
 
@@ -15,7 +15,7 @@
     max-height:100%;
     overflow-y: scroll;
     background-color:rgba(245,245,245)
-} */
+} 
 
 #pokedexBtn{
     position:absolute;
