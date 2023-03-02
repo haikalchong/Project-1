@@ -381,7 +381,7 @@ document.querySelector("#searchBtn").addEventListener("click", async function ()
 
     if (searchFood == true) {
         searchResultCluster.clearLayers()
-        
+        positionCluster.clearLayers()
         
         let searchValue = document.querySelector("#searchValue").value;
         let searchResults = await searchData(searchValue, currentL);
@@ -401,6 +401,7 @@ document.querySelector("#searchBtn").addEventListener("click", async function ()
     } 
    else {
         positionCluster.clearLayers()
+        searchResultCluster.clearLayers()
        let result = await searchPosition(searchValue);
        for ( position of result.results){
         let coordinates=([position.LATITUDE, position.LONGITUDE])
