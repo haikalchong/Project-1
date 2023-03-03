@@ -398,6 +398,8 @@ document.querySelector("#searchBtn").addEventListener("click", async function ()
         ${result.location.formatted_address}</p></div>`)
         }
         searchResultCluster.addTo(map)
+        
+        
     } 
    else {
         positionCluster.clearLayers()
@@ -406,14 +408,19 @@ document.querySelector("#searchBtn").addEventListener("click", async function ()
        for ( position of result.results){
         let coordinates=([position.LATITUDE, position.LONGITUDE])
         let positionMarker = L.marker(coordinates).addTo(positionCluster)
+       
+      
         positionMarker.bindPopup(`<div> <h6>${position.BUILDING}</h6>
         <p>${position.ADDRESS}</p>`)
+          
        }
         positionCluster.addTo(map)
+        
         //let result = await axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${searchValue}&returnGeom=Y&getAddrDetails=Y`)
 
     }
 });
+
 
 let pokedexData = []
 
@@ -475,6 +482,7 @@ let overlays = {
     'Weather': weatherLayer
 }
 L.control.layers(baseLayers, overlays).addTo(map);
+
 
 
 
