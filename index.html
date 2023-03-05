@@ -14,7 +14,12 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
 
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Iso&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
 
 
@@ -54,12 +59,11 @@
     <div class='row container-fluid mt-3' id="mainbody">
 
         <div id="map" class= 'col-12 col-lg-8' style="height:100vh">
-            <button class="btn btn-success btn-sm" id="pokedexBtn" type=" button" data-bs-toggle="collapse"
-            data-bs-target="#pokedex" aria-expanded="false" aria-controls="pokedex">
-            Pokedex</button>
+            <button class="btn btn-success btn-sm" id="pokedexClearBtn" type=" button">Clear Pokedex</button>
         </div>
-        <div id="pokedex" class="collapse col-12 col-lg-4">
-            <h2 class="pokedexNone">None</h2>
+        <div id="pokedex" class="col-12 col-lg-4">
+        <h2 class="pokedexTitle">My Pokedex</h2>
+
         </div>
 
         

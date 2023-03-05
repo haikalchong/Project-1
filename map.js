@@ -1,11 +1,17 @@
-
-
-
-
-
-
 const API_BASE_URL = "https://api.foursquare.com/v3/places/";
 
+// localStorage.clear();
+
+let pokemonStore = JSON.parse(localStorage.getItem("pokedex"));
+
+
+if(pokemonStore) {
+    for(let i of pokemonStore) {
+        createPokemonCard(i.id, i.name, i.img, i.moves)
+    }
+} else {
+    pokemonStore = [];
+}
 
 
 
@@ -159,8 +165,8 @@ async function marker(pokemon) {
 
         let pokeData = await getPokemon()
         let pokemonCard = document.createElement("div");
-        pokemonCard.className = "card"
-        pokemonCard.style = "width:100%; height 100%; background-color:black;"
+        pokemonCard.className = "card pokeCard"
+        pokemonCard.style = "width:100%; height 100%; background-color:black;  font-family: 'Inconsolata', monospace"
 
         let cardImg = document.createElement("img")
         cardImg.src = `${pokeData.sprites.front_shiny}`
@@ -185,16 +191,16 @@ async function marker(pokemon) {
 
         let cardListNumber = document.createElement("li")
         cardListNumber.style = "color:white;"
-        cardListNumber.innerHTML = `"${pokeData.id}"`
+        cardListNumber.innerHTML = `ID: "${pokeData.id}"`
         cardList.appendChild(cardListNumber)
         let cardListType = document.createElement("li");
         cardListType.style = "color:white;"
-        cardListType.innerHTML = `${pokeData.types[0].type.name}`
+        cardListType.innerHTML = `Type: ${pokeData.types[0].type.name}`
         cardList.appendChild(cardListType)
 
         let cardListWeight = document.createElement("li")
         cardListWeight.style = "color:white;"
-        cardListWeight.innerHTML = `${pokeData.weight}`
+        cardListWeight.innerHTML = `Weight: ${pokeData.weight} lbs`
         cardList.appendChild(cardListWeight)
 
         cardParagraph.appendChild(cardList)
@@ -212,52 +218,36 @@ async function marker(pokemon) {
         captureButton.className = "btn btn-primary pokeCapture"
         captureButton.innerText = "Capture"
         captureButton.addEventListener("click", function () {
-            let none = document.querySelector(".pokedexNone")
-            if (none) {
-                none.innerHTML = ""
-            }
-
 
             //creating the pokemon data
+            let pokemonDataImg = pokeData.sprites.other.dream_world.front_default;
+            let pokemonDataName = pokeData.name;
+            let pokemonDataId = pokeData.id;
+            let pokemonDataMoves = pokeData.moves;
 
-            let pokedexData = document.createElement("div");
+            let pokemonMovesArray = [];
 
+            for(let i= 0; i < 4; i++) {
+                let move = pokemonDataMoves[i].move.name;
+                pokemonMovesArray.push(move);
+            }
 
+            createPokemonCard(pokemonDataId, pokemonDataName, pokemonDataImg, pokemonMovesArray);
 
-            let pokedexCard = document.createElement("div")
-
-
-            let pokedexImage = document.createElement("img")
-            pokedexImage.className = "cardImg pokedexImg"
-            pokedexImage.src = `${pokeData.sprites.other.dream_world.front_default}`
-            pokedexCard.appendChild(pokedexImage)
-            let pokedexName = document.createElement("h2");
-            pokedexName.innerHTML = `${pokeData.name}`
-            pokedexCard.appendChild(pokedexName);
-
-            let pokemonMoves = document.createElement("ul");
-            pokemonMoves.className = "list-group "
-
-            let pokemonMovesArray = pokeData.moves
-
-            for (let i = 0; i < 4; i++) {
-                let moveElement = document.createElement("li")
-                moveElement.className = "list-group-item"
-                moveElement.innerHTML = `Skill:${pokemonMovesArray[i].move.name}`
-                pokemonMoves.appendChild(moveElement)
+            let pokemonData = {
+                "id": pokemonDataId,
+                "name": pokemonDataName,
+                "img" : pokemonDataImg,
+                "moves": pokemonMovesArray
             }
 
 
-            pokedexCard.appendChild(pokemonMoves);
-            pokedexData.appendChild(pokedexCard);
 
 
+            pokemonStore.push(pokemonData)
+            localStorage.setItem("pokedex", JSON.stringify(pokemonStore));
 
 
-
-
-
-            document.querySelector("#pokedex").appendChild(pokedexData)
             pokemonLoc.remove()
         })
         pokemonCard.appendChild(captureButton)
@@ -270,29 +260,52 @@ async function marker(pokemon) {
 
 
 
+//create pokemon card here
+function createPokemonCard(pokeId, pokeName, pokeImg, pokeMoves) {
+    let pokedexData = document.createElement("div");
+    pokedexData.className = "pokedexMain";
+
+    let pokedexCard = document.createElement("div")
+    pokedexCard.className="pokemonCard"
+
+    let pokedexImage = document.createElement("img")
+    pokedexImage.className= "cardImg"
+    pokedexImage.src = `${pokeImg}`
+    pokedexCard.appendChild(pokedexImage)
+    
+    
+    let pokedexName = document.createElement("h2");
+    pokedexName.innerHTML = `${pokeName}`;
+    pokedexCard.appendChild(pokedexName);
+
+    let pokedexId = document.createElement("h4");
+    pokedexId.innerHTML = `ID: ${pokeId}`;
+    pokedexCard.appendChild(pokedexId);
+
+    let pokemonMoves = document.createElement("ul");
+    pokemonMoves.className = "pokeMoves "
+
+    for (let i of pokeMoves) {
+        let moveElement = document.createElement("li")
+        moveElement.className = "list-group-item pokemonSkill"
+        moveElement.innerHTML = `Skill: ${i}`
+        pokemonMoves.appendChild(moveElement)
+    }
+
+    pokedexCard.appendChild(pokemonMoves);
+    pokedexData.appendChild(pokedexCard);
+
+    document.querySelector("#pokedex").appendChild(pokedexData)
+
+}
+
+
+//search position
 async function searchPosition(){
     let searchLocation = document.querySelector("#searchValue").value;
     let result = await axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${searchLocation}&returnGeom=Y&getAddrDetails=Y`)
     return result.data
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -319,10 +332,10 @@ async function randomPost() {
 
 
 }
-setInterval(function () {
-    pokeLayer.clearLayers()
-    randomPost();
-}, 10000)
+// setInterval(function () {
+//     pokeLayer.clearLayers()
+//     randomPost();
+// }, 10000)
 
 // four square add on
 const fourSquareKey = "fsq3JrEqE31l1oSQP3kdQjP7B/tDogA6mWBfGxVi+3mBKl8=";
@@ -394,7 +407,7 @@ document.querySelector("#searchBtn").addEventListener("click", async function ()
             
 
             searchMarker.bindPopup(`<div>
-        <h3>${result.name}</h3><p>
+        <h3 style= " font-family: 'Inconsolata', monospace">${result.name}</h3><p style= " font-family: 'Inconsolata', monospace">
         ${result.location.formatted_address}</p></div>`)
         }
         searchResultCluster.addTo(map)
@@ -410,7 +423,7 @@ document.querySelector("#searchBtn").addEventListener("click", async function ()
         let positionMarker = L.marker(coordinates).addTo(positionCluster)
        
       
-        positionMarker.bindPopup(`<div> <h6>${position.BUILDING}</h6>
+        positionMarker.bindPopup(`<div style= " font-family: 'Inconsolata', monospace"> <h6>${position.BUILDING}</h6>
         <p>${position.ADDRESS}</p>`)
           
        }
@@ -453,18 +466,18 @@ async function weather() {
 
         if (loc.forecast.forecast == "Cloudy" || loc.forecast.forecast == 'Partly Cloudy (Day)' || loc.forecast.forecast == 'Partly Cloudy (Night)') {
             
-            L.marker([lat, lng], { icon: cloudIcon }).bindPopup(`<h6> ${loc.name}</h6>`).addTo(weatherLayer)
+            L.marker([lat, lng], { icon: cloudIcon }).bindPopup(`<div class="weatherLoc" style= " font-family: 'Inconsolata', monospace"><h6> ${loc.name}</h6></div>`).addTo(weatherLayer)
         }
 
         if (loc.forecast.forecast == "Fair & Warm" || loc.forecast.forecast == 'Fair(Day)' || loc.forecast.forecast == 'Fair(Night)') {
-            L.marker([lat, lng], { icon: sunIcon }).bindPopup(`<h6> ${loc.name}</h6>`).addTo(weatherLayer)
+            L.marker([lat, lng], { icon: sunIcon }).bindPopup(`<div class="weatherLoc" style= " font-family: 'Inconsolata', monospace"><h6> ${loc.name}</h6></div>`).addTo(weatherLayer)
         }
 
         if (loc.forecast.forecast == 'Light Showers' || loc.forecast.forecast == 'Showers' || loc.forecast.forecast == 'Moderate Rain' || loc.forecast.forecast == 'Light Rain') {
-            L.marker([lat, lng], { icon: rainIcon }).bindPopup(`<h6> ${loc.name}</h6>`).addTo(weatherLayer)
+            L.marker([lat, lng], { icon: rainIcon }).bindPopup(`<div class="weatherLoc" style= " font-family: 'Inconsolata', monospace"><h6> ${loc.name}</h6></div>`).addTo(weatherLayer)
         }
         if (loc.forecast.forecast == 'Thundery Showers' || loc.forecast.forecast == 'Heavy Thundery Showers' || loc.forecast.forecast == ' Heavy Thundery Showers with Gusty Winds') {
-            L.marker([lat, lng], { icon: thunderIcon }).bindPopup(`<h6> ${loc.name}</h6>`).addTo(weatherLayer)
+            L.marker([lat, lng], { icon: thunderIcon }).bindPopup(`<div class="weatherLoc" style= " font-family: 'Inconsolata', monospace"><h6> ${loc.name}</h6></div>`).addTo(weatherLayer)
         }
         weatherLayer.addTo(map)
     }
@@ -486,10 +499,11 @@ L.control.layers(baseLayers, overlays).addTo(map);
 
 
 
+document.querySelector("#pokedexClearBtn").addEventListener("click", () =>{
+    localStorage.clear();
+    document.getElementById("pokedex").innerHTML = `<h2 class="pokedexTitle">My Pokedex</h2>`;
 
-
-
-
+});
 
 
 

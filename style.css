@@ -1,3 +1,17 @@
+.pokeCard {
+    align-items: center;
+    text-transform: capitalize;
+}
+
+.pokeCard ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.pokeCapture {
+    width: 100%;
+}
+
 .cardImg img{
     width:"40px"!important; 
 }
@@ -9,15 +23,50 @@
 
 
 
-#pokedexBtn{
+#pokedexClearBtn{
     position:absolute;
     z-index:10000;
     left:0;
     top:10%;
 }
 
-.pokedexImg{
+.cardImg{
     width:200px;
     height:auto;
 }
 
+.pokemonSkill,
+#pokedex h2 {
+    text-transform: capitalize;
+}
+
+#pokedex {
+    overflow-y: scroll;
+    max-height:100vh;
+    background-color:black;
+    color:white;
+}
+
+.pokemonCard {
+    margin-bottom: 20px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pokeMoves{
+    width:100%;
+    font-family: 'Inconsolata', monospace;
+
+}
+.pokedexTitle{
+    text-align:center;
+}
+
+#pokedex{
+    font-family: 'Rubik Iso', cursive;
+}
+
+body{
+    font-family: 'Inconsolata', monospace !important;
+}
