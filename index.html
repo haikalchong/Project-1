@@ -26,22 +26,25 @@
     <title>Document</title>
 </head>
 
-<body style="background-color: azure;">
+<body style="background-image:url('star.jpg'); color:white;">
+    
     <div class="container-fluid">
-        <div class="p-3">
+        <div class="d-flex justify-content-center container" ><img src="pokemon.gif"/></div>
+        <div class="ps-3">
             <input type="text" id="searchValue" />
             <button id="searchBtn" class="btn btn-success">Search</button>
-
-            <input type="radio" name="radio" id="places" class="radio" value="places" checked>
-            <label>
-                Places
-            </label>
-            <input type="radio" name="radio" id="food" class="radio" value="food">
-            <label>
-                Food
-            </label>
+            <div>
+                <input type="radio" name="radio" id="places" class="radio" value="places" checked>
+                <label>
+                    Places
+                </label>
+                <input type="radio" name="radio" id="food" class="radio" value="food">
+                <label>
+                    Food
+                </label>
+            </div>
         </div>
-        <div class="m-3">
+        <div class="mb-3">
             <label for="pokemonGenSelect">Choose a Pokemon Generation</label>
 
             <select name="pokemonGenSelect" onchange="changePokemonGen()" id="pokemonGenSelect">
