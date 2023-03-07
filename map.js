@@ -5,9 +5,9 @@ const API_BASE_URL = "https://api.foursquare.com/v3/places/";
 let pokemonStore = JSON.parse(localStorage.getItem("pokedex"));
 
 
-if(pokemonStore) {
-    for(let i of pokemonStore) {
-        createPokemonCard(i.id, i.name, i.img, i.moves)
+if (pokemonStore) {
+    for (let i of pokemonStore) {
+        createPokemonCard(i.id, i.name, i.img, i.moves, i.cp)
     }
 } else {
     pokemonStore = [];
@@ -147,7 +147,7 @@ async function multiplePokemon() {
 
 let pokeLayer = L.layerGroup()
 let searchResultCluster = L.markerClusterGroup()
-let positionCluster=L.markerClusterGroup()
+let positionCluster = L.markerClusterGroup()
 
 //generate random marker
 
@@ -164,6 +164,9 @@ async function marker(pokemon) {
 
 
         let pokeData = await getPokemon()
+
+        
+
         let pokemonCard = document.createElement("div");
         pokemonCard.className = "card pokeCard"
         pokemonCard.style = "width:100%; height 100%; background-color:black;  font-family: 'Inconsolata', monospace"
@@ -220,25 +223,33 @@ async function marker(pokemon) {
         captureButton.addEventListener("click", function () {
 
             //creating the pokemon data
+           
+            let min = 10
+            let max = 1000
+            let pokemonCombatPower = Math.floor(Math.random() * (max - min + 1) + min)
             let pokemonDataImg = pokeData.sprites.other.dream_world.front_default;
             let pokemonDataName = pokeData.name;
             let pokemonDataId = pokeData.id;
             let pokemonDataMoves = pokeData.moves;
+            let cp = pokemonCombatPower
+            console.log(cp)
 
             let pokemonMovesArray = [];
 
-            for(let i= 0; i < 4; i++) {
+            for (let i = 0; i < 4; i++) {
                 let move = pokemonDataMoves[i].move.name;
                 pokemonMovesArray.push(move);
             }
 
-            createPokemonCard(pokemonDataId, pokemonDataName, pokemonDataImg, pokemonMovesArray);
+            createPokemonCard(pokemonDataId, pokemonDataName, pokemonDataImg, pokemonMovesArray,cp);
 
             let pokemonData = {
                 "id": pokemonDataId,
                 "name": pokemonDataName,
-                "img" : pokemonDataImg,
-                "moves": pokemonMovesArray
+                "img": pokemonDataImg,
+                "moves": pokemonMovesArray,
+                "cp" : cp
+
             }
 
 
@@ -261,19 +272,20 @@ async function marker(pokemon) {
 
 
 //create pokemon card here
-function createPokemonCard(pokeId, pokeName, pokeImg, pokeMoves) {
+function createPokemonCard(pokeId, pokeName, pokeImg, pokeMoves,cp) {
+    
     let pokedexData = document.createElement("div");
     pokedexData.className = "pokedexMain";
 
     let pokedexCard = document.createElement("div")
-    pokedexCard.className="pokemonCard"
+    pokedexCard.className = "pokemonCard"
 
     let pokedexImage = document.createElement("img")
-    pokedexImage.className= "cardImg"
+    pokedexImage.className = "cardImg"
     pokedexImage.src = `${pokeImg}`
     pokedexCard.appendChild(pokedexImage)
-    
-    
+
+
     let pokedexName = document.createElement("h2");
     pokedexName.innerHTML = `${pokeName}`;
     pokedexCard.appendChild(pokedexName);
@@ -281,6 +293,30 @@ function createPokemonCard(pokeId, pokeName, pokeImg, pokeMoves) {
     let pokedexId = document.createElement("h4");
     pokedexId.innerHTML = `ID: ${pokeId}`;
     pokedexCard.appendChild(pokedexId);
+    
+    let pokecp=document.createElement('p')
+    pokecp.className = 'pokeCp'
+    // let min = 10
+    // let max = 1000
+    // let pokemonCombatPower = Math.floor(Math.random() * (max - min + 1) + min)
+    if (cp <500 ){
+    pokecp.innerHTML = `Combat Power :${cp} Grade: ★` ;
+    pokecp.style = 'color:green;'
+    pokedexCard.appendChild(pokecp)
+    }else if ( cp >= 501 && cp < 850){
+        pokecp.innerHTML = `Combat Power : ${cp} Grade: ★★`
+        pokecp.style = 'color:blue;'
+        pokedexCard.appendChild(pokecp)
+    }else if ( cp >= 850 && cp < 950){
+        pokecp.innerHTML = `Combat Power : ${cp} Grade: ★★★`
+        pokecp.style = 'color: purple; '
+        pokedexCard.appendChild(pokecp)
+    }else if (cp >= 950 && cp < 1000){
+        pokecp.innerHTML = `Combat Power : ${cp} Grade: ★★★★`
+        pokecp.style = 'color:yellow;'
+        pokedexCard.appendChild(pokecp)
+    } 
+   
 
     let pokemonMoves = document.createElement("ul");
     pokemonMoves.className = "pokeMoves "
@@ -291,6 +327,7 @@ function createPokemonCard(pokeId, pokeName, pokeImg, pokeMoves) {
         moveElement.innerHTML = `Skill: ${i}`
         pokemonMoves.appendChild(moveElement)
     }
+   
 
     pokedexCard.appendChild(pokemonMoves);
     pokedexData.appendChild(pokedexCard);
@@ -301,7 +338,7 @@ function createPokemonCard(pokeId, pokeName, pokeImg, pokeMoves) {
 
 
 //search position
-async function searchPosition(){
+async function searchPosition() {
     let searchLocation = document.querySelector("#searchValue").value;
     let result = await axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${searchLocation}&returnGeom=Y&getAddrDetails=Y`)
     return result.data
@@ -332,10 +369,10 @@ async function randomPost() {
 
 
 }
-// setInterval(function () {
-//     pokeLayer.clearLayers()
-//     randomPost();
-// }, 10000)
+setInterval(function () {
+    pokeLayer.clearLayers()
+    randomPost();
+}, 10000)
 
 // four square add on
 const fourSquareKey = "fsq3JrEqE31l1oSQP3kdQjP7B/tDogA6mWBfGxVi+3mBKl8=";
@@ -369,7 +406,7 @@ let searchResultLayer = L.layerGroup()
 document.querySelector("#searchBtn").addEventListener("click", async function () {
     // let searchValue = document.querySelector("#searchValue").value;
     // let searchResults = await searchData(searchValue);
-    
+
 
     //geolocation
     let currentL = ""
@@ -384,18 +421,18 @@ document.querySelector("#searchBtn").addEventListener("click", async function ()
 
         //  L.circle(e.latlng, radius).addTo(map);
 
-    } ;
+    };
 
     map.on('locationfound', onLocationFound);
-    let searchFood  = document.querySelector('#food').checked
-   
-    
+    let searchFood = document.querySelector('#food').checked
+
+
 
 
     if (searchFood == true) {
         searchResultCluster.clearLayers()
         positionCluster.clearLayers()
-        
+
         let searchValue = document.querySelector("#searchValue").value;
         let searchResults = await searchData(searchValue, currentL);
 
@@ -404,31 +441,31 @@ document.querySelector("#searchBtn").addEventListener("click", async function ()
             let coordinate = [result.geocodes.main.latitude, result.geocodes.main.longitude];
             let searchMarker = L.marker(coordinate, { icon: generalMarker }).addTo(searchResultCluster);
 
-            
+
 
             searchMarker.bindPopup(`<div>
         <h3 style= " font-family: 'Inconsolata', monospace">${result.name}</h3><p style= " font-family: 'Inconsolata', monospace">
         ${result.location.formatted_address}</p></div>`)
         }
         searchResultCluster.addTo(map)
-        
-        
-    } 
-   else {
+
+
+    }
+    else {
         positionCluster.clearLayers()
         searchResultCluster.clearLayers()
-       let result = await searchPosition(searchValue);
-       for ( position of result.results){
-        let coordinates=([position.LATITUDE, position.LONGITUDE])
-        let positionMarker = L.marker(coordinates).addTo(positionCluster)
-       
-      
-        positionMarker.bindPopup(`<div style= " font-family: 'Inconsolata', monospace"> <h6>${position.BUILDING}</h6>
+        let result = await searchPosition(searchValue);
+        for (position of result.results) {
+            let coordinates = ([position.LATITUDE, position.LONGITUDE])
+            let positionMarker = L.marker(coordinates).addTo(positionCluster)
+
+
+            positionMarker.bindPopup(`<div style= " font-family: 'Inconsolata', monospace"> <h6>${position.BUILDING}</h6>
         <p>${position.ADDRESS}</p>`)
-          
-       }
+
+        }
         positionCluster.addTo(map)
-        
+
         //let result = await axios.get(`https://developers.onemap.sg/commonapi/search?searchVal=${searchValue}&returnGeom=Y&getAddrDetails=Y`)
 
     }
@@ -451,12 +488,16 @@ async function weather() {
 
 
 
+
     for (let weather of response.data.items[0].forecasts) {
-        weatherArray.push(weather)
+        
+       weatherArray.push(weather)
     }
 
     for (let i = 0; i < weatherArray.length; i++) {
+
         weatherArea[i].forecast = weatherArray[i]
+
 
     }
     for (let loc of weatherArea) {
@@ -464,8 +505,9 @@ async function weather() {
         let lng = loc.label_location.longitude;
 
 
+
         if (loc.forecast.forecast == "Cloudy" || loc.forecast.forecast == 'Partly Cloudy (Day)' || loc.forecast.forecast == 'Partly Cloudy (Night)') {
-            
+
             L.marker([lat, lng], { icon: cloudIcon }).bindPopup(`<div class="weatherLoc" style= " font-family: 'Inconsolata', monospace"><h6> ${loc.name}</h6></div>`).addTo(weatherLayer)
         }
 
@@ -499,7 +541,7 @@ L.control.layers(baseLayers, overlays).addTo(map);
 
 
 
-document.querySelector("#pokedexClearBtn").addEventListener("click", () =>{
+document.querySelector("#pokedexClearBtn").addEventListener("click", () => {
     localStorage.clear();
     document.getElementById("pokedex").innerHTML = `<h2 class="pokedexTitle">My Pokedex</h2>`;
 
