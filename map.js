@@ -33,11 +33,11 @@ let avatarMarker = L.icon({
     popupAnchor: [0, 0]
 });
 
-let locationMarker= L.icon({
+let locationMarker = L.icon({
     iconUrl: 'location.png',
-    iconSize: [45,50],
-    iconAnchor:[22,94],
-    popupAnchor:[0,0]
+    iconSize: [45, 50],
+    iconAnchor: [22, 94],
+    popupAnchor: [0, 0]
 })
 const sunIcon = L.icon({
     iconUrl: 'clear-sky.png',
@@ -239,7 +239,7 @@ function createPokemonCard(pokeId, pokeName, pokeImg, pokeMoves, cp) {
 
     let pokedexData = document.createElement("div");
     pokedexData.className = "pokedexMain";
-    pokedexData.style="background-image:url('star.jpg');"
+    pokedexData.style = "background-image:url('star.jpg');"
 
     let pokedexCard = document.createElement("div")
     pokedexCard.className = "pokemonCard"
@@ -386,7 +386,7 @@ document.querySelector("#searchBtn").addEventListener("click", async function ()
         let result = await searchPosition(searchValue);
         for (position of result.results) {
             let coordinates = ([position.LATITUDE, position.LONGITUDE])
-            let positionMarker = L.marker(coordinates, {icon: locationMarker}).addTo(positionCluster)
+            let positionMarker = L.marker(coordinates, { icon: locationMarker }).addTo(positionCluster)
             positionMarker.bindPopup(`<div style= " font-family: 'Inconsolata', monospace"> <h6>${position.BUILDING}</h6>
         <p>${position.ADDRESS}</p>`)
 
@@ -404,6 +404,7 @@ let weatherArray = []
 
 async function weather() {
     let response = await axios.get(weatherApi)
+    console.log(response)
     let weatherArea = response.data.area_metadata;
 
     for (let weather of response.data.items[0].forecasts) {
@@ -447,3 +448,11 @@ document.querySelector("#pokedexClearBtn").addEventListener("click", () => {
 
 
 
+document.querySelector("#submit").addEventListener('click',function(){
+    let email = document.querySelector("#email").value
+    if(!email || email.includes("@")==false){
+        alert("Please key in a valid email")
+    }else{
+        alert("Email received")
+    }
+})

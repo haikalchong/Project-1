@@ -23,12 +23,6 @@
 
 
 
-#pokedexClearBtn{
-    position:absolute;
-    z-index:10000;
-    left:0;
-    top:10%;
-}
 
 .cardImg{
     width:200px;
@@ -76,3 +70,18 @@ body{
     font-family: 'Inconsolata', monospace !important;
 }
 
+.offcanvas{
+    background-image: url("squirtle.gif")!important;
+    background-size: cover;
+}
+
+#pokemonhero{
+    font-family: 'Chakra Petch', sans-serif;
+    color:gold;
+}
+
+
+#cta{
+    background: rgba(128, 128, 128, 0.3);
+    color:gold;
+}
