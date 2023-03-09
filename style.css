@@ -86,6 +86,7 @@ body{
     color:gold;
     height:388px;
     width:500px;
+    position:relative;
 }
 
  #button{
@@ -97,10 +98,3 @@ body{
     text-align: center;
 }
 
-div.move{
-    width:400px;
-    height:400px;
-    left:35%;
-    top:10%;
-    position:relative;
-}
