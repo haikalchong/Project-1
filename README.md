@@ -105,13 +105,13 @@ Pokemon has combat power but unable to battle | Pokemon battles will be implemen
 ## Testing
 
 ### Test Cases
-Test Case #1 : Ensure that the website loads. Expected Results- website loads with no faults
-Test Case #2 : Monitor the pokemon to ensure that it spawns every 10 seconds. Expected Results- Pokemon randomly spawns every 10seconds
-Test Case #3 : Search for food using the search function. Expected Results - Food that matches your search should appear within 5KM around you
-Test Case #4 : Search for a specific location usings the places search function. Expected Results- Returns the searched location
-Test Case #5 : Pokedex to store caught pokemon. Expected Results- Caught pokemon should appear in the pokedex and the grade must be shown
-Test Case #6 : Upon page refresh, pokedex data must still be there. Expected Results - Pokedex data is still there
-Test Case #7 : On pokedex clear button click, pokedex Data is cleared. Expected Results - Exactly what I said
+Test Case #1 : Ensure that the website loads. Expected Results- website loads with no faults<br>
+Test Case #2 : Monitor the pokemon to ensure that it spawns every 10 seconds. Expected Results- Pokemon randomly spawns every 10seconds<br>
+Test Case #3 : Search for food using the search function. Expected Results - Food that matches your search should appear within 5KM around you<br>
+Test Case #4 : Search for a specific location usings the places search function. Expected Results- Returns the searched location<br>
+Test Case #5 : Pokedex to store caught pokemon. Expected Results- Caught pokemon should appear in the pokedex and the grade must be shown<br>
+Test Case #6 : Upon page refresh, pokedex data must still be there. Expected Results - Pokedex data is still there<br>
+Test Case #7 : On pokedex clear button click, pokedex Data is cleared. Expected Results - Exactly what I said<br>
 
 ### Testing for Mobile Responsiveness
  * Testing was done using Responsively across iPhone 14, iPad, and Generic Laptop.
