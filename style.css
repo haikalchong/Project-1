@@ -84,4 +84,23 @@ body{
 #cta{
     background: rgba(128, 128, 128, 0.3);
     color:gold;
+    height:388px;
+    width:500px;
+}
+
+ #button{
+    width: 100px;
+    height: 100px;
+    padding: 13px 18px;
+    border-radius: 60px;
+    font-size: 15px;
+    text-align: center;
+}
+
+div.move{
+    width:400px;
+    height:400px;
+    left:35%;
+    top:10%;
+    position:relative;
 }
