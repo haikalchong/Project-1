@@ -44,7 +44,10 @@ Most maps are boring and just get you to places. I want to change that. Have you
 * Pain point: Most maps are boring and exclude certain information(weather forecast etc).
 
 User Stories | Acceptance Criteria(s)
------------- | -------------
+I use map to walk around so boring| I need some sort of entertainment when I am walking to places.
+Most map no weather forecast | I need to know whether to bring an umbrella out or not.
+I wish pokemon Go had a gps function | Now i can walk and catch pokemon.
+
 
 
 ### Scope
@@ -62,36 +65,56 @@ Features
 * Cute
 
 ### Structure
+![Untitled-2023-03-09-1648](https://user-images.githubusercontent.com/122865466/223972881-55ef5402-2baa-4924-8038-7ca10cff7748.png)
 
 ### Skeleton
+![Page 1](https://user-images.githubusercontent.com/122865466/223974710-b197ea27-b879-4139-9a45-1de0bf92a9c0.png)
+![Map page](https://user-images.githubusercontent.com/122865466/223974729-3a1cad7f-0da2-4095-88d3-d661709edc95.png)
 
 
 ### Surface
 **Colours**: For the page layout of the map most of the colours used are dark. A lot of contrasting colours are used to look more pleasing to the users eye. Such as (black vs neon green) ( blue vs yellow)
 
+<img width="907" alt="colour" src="https://user-images.githubusercontent.com/122865466/223975352-c9627949-9eaa-44c8-8d7e-be2afaa051ee.png">
 
 
-**Font Choice**: 'Chakra Petch', 'Inconsolata',
+
+**Font Choice**: 'Chakra Petch', 'Inconsolata', We use nostalgic fonts to bring nostalgia to long time fans to reminisce about their childhood days.
 
 **Icons and Markers**: All icons and markers are chosen whereby they will be highly visible to the user and also contrast against the map.
 
 ## Features
 Features | Descriptions
--------- | -------------
+Pokemon - Random Pokemon will spawn every 10 seconds on the map. Pokemon will vary in Combat Power and also be graded from 1 star to 4 stars. 4 Generations of pokemon will be available for the user to choose from.
+
+Map search Food - Able to search for food near the user. With a radius of 5km. 
+
+Map search Location - Able to pinpoint exact locations in Singapore. 
+
+Weather- Map will update the weather forecast every two hourly.
+
 
 
 ### Limitations and future implementations
 Limitations | Future Implementations to Resolve Limitations
------------ | -------------
+Not all pokemon are available | Will update in time
+Tracking GPS location service is unavailable | Will be available soon as our developers are already working on it
+Pokemon has combat power but unable to battle | Pokemon battles will be implemented in the near future.
 
 
 ## Testing
 
 ### Test Cases
-The test cases can be found [here](https://nanometre.github.io/historic-site-finder-tgc-proj1/images/readme-images/test-cases.pdf).
+Test Case #1 : Ensure that the website loads. Expected Results- website loads with no faults
+Test Case #2 : Monitor the pokemon to ensure that it spawns every 10 seconds. Expected Results- Pokemon randomly spawns every 10seconds
+Test Case #3 : Search for food using the search function. Expected Results - Food that matches your search should appear within 5KM around you
+Test Case #4 : Search for a specific location usings the places search function. Expected Results- Returns the searched location
+Test Case #5 : Pokedex to store caught pokemon. Expected Results- Caught pokemon should appear in the pokedex and the grade must be shown
+Test Case #6 : Upon page refresh, pokedex data must still be there. Expected Results - Pokedex data is still there
+Test Case #7 : On pokedex clear button click, pokedex Data is cleared. Expected Results - Exactly what I said
 
 ### Testing for Mobile Responsiveness
- * Testing was done using Responsively across iPhone X, iPad, and Generic Laptop.
+ * Testing was done using Responsively across iPhone 14, iPad, and Generic Laptop.
 
 
 ## Technologies Used
@@ -129,7 +152,7 @@ The test cases can be found [here](https://nanometre.github.io/historic-site-fin
 
 
 ## Deployment
-The web application is hosted on [GitHub Pages](https://pages.github.com/)
+The web application is hosted on Netlify (https://flourishing-quokka-df4a64.netlify.app/#)
 
 **Steps to deploy web application on GitHub Pages**
 1. On GitHub, navigate to the site's repository.
@@ -147,8 +170,8 @@ The web application is hosted on [GitHub Pages](https://pages.github.com/)
 2. Flaticon
     - Other icons and custom map markers are obtained from [Flaticon](https://www.flaticon.com/). The icons and markers are made by Vectorslab, Freepik and Pixel perfect. 
 
-3. CSS bounce animation
-    - Code for the bounce animation is taken and adapted from [here](https://css-tricks.com/making-css-animations-feel-natural/).
-
-4. Regular expression syntax for coordinates 
-    - The regular expressions for matching coordinates (latitude and longitude) are taken from [here](https://stackoverflow.com/questions/3518504/regular-expression-for-matching-latitude-longitude-coordinates).
+3. Foursquared
+      - Use foursquared for the food search
+      
+4. PokeApi
+       - To extract Pokemon Data
